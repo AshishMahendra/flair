@@ -1552,7 +1552,7 @@ def randomly_split_into_two_datasets(dataset, length_of_first):
     import random
 
     indices = [i for i in range(len(dataset))]
-    random.shuffle(indices)
+    random.Random(4).shuffle(indices) #added .Random function to set the seed
 
     first_dataset = indices[:length_of_first]
     second_dataset = indices[length_of_first:]

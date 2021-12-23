@@ -45,7 +45,7 @@ class TextClassifier(flair.nn.DefaultClassifier[Sentence]):
         self.document_embeddings: flair.embeddings.DocumentEmbeddings = document_embeddings
 
         self._label_type = label_type
-
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.document_embeddings.embedding_length, nhead=1) #addtional head to bert_base_uncased
         self.decoder = nn.Linear(self.document_embeddings.embedding_length, len(self.label_dictionary))
         nn.init.xavier_uniform_(self.decoder.weight)
 
@@ -68,9 +68,12 @@ class TextClassifier(flair.nn.DefaultClassifier[Sentence]):
 
         # make tensor for all embedded sentences in batch
         embedding_names = self.document_embeddings.get_names()
-        text_embedding_list = [sentence.get_embedding(embedding_names).unsqueeze(0) for sentence in sentences]
+        text_embedding_list = [sentence.get_embedding(embedding_names).unsqueeze(0).unsqueeze(1) for sentence in sentences] #.squeeze(1) need to increase the dimension 
         text_embedding_tensor = torch.cat(text_embedding_list, 0).to(flair.device)
 
+        #pass embeddings through the extra encoder layer
+        encoder_tensor = self.encoder_layer(text_embedding_tensor)
+        text_embedding_tensor= encoder_tensor.squeeze(1)
         # send through decoder to get logits
         scores = self.decoder(text_embedding_tensor)
 

@@ -659,7 +659,7 @@ class TARSClassifier(FewshotClassifier):
         if isinstance(embeddings, str):
             embeddings = TransformerDocumentEmbeddings(
                 model=embeddings,
-                fine_tune=True,
+                fine_tune=True, #alter this parameter to train the model or just head
                 layers="-1",
                 layer_mean=False,
             )
@@ -782,7 +782,7 @@ class TARSClassifier(FewshotClassifier):
         return_loss=False,
         embedding_storage_mode="none",
         label_threshold: float = 0.5,
-        multi_label: Optional[bool] = None,
+        multi_label: Optional[bool] = False,
     ):
         """
         Predict sequence tags for Named Entity Recognition task
