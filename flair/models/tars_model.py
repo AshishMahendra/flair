@@ -751,7 +751,7 @@ class TARSClassifier(FewshotClassifier):
         model._task_specific_attributes = state["task_specific_attributes"]
 
         # linear layers of internal classifier
-        model.load_state_dict(state["state_dict"])
+        model.load_state_dict(state["state_dict"],strict=False)
         return model
 
     @staticmethod

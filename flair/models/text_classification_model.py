@@ -45,7 +45,7 @@ class TextClassifier(flair.nn.DefaultClassifier[Sentence]):
         self.document_embeddings: flair.embeddings.DocumentEmbeddings = document_embeddings
 
         self._label_type = label_type
-        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.document_embeddings.embedding_length, nhead=1) #addtional head to bert_base_uncased
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.document_embeddings.embedding_length, nhead=8, dim_feedforward=2048) #addtional head to bert_base_uncased
         self.decoder = nn.Linear(self.document_embeddings.embedding_length, len(self.label_dictionary))
         nn.init.xavier_uniform_(self.decoder.weight)
 
