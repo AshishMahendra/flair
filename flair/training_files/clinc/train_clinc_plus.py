@@ -7,6 +7,7 @@ import argparse
 train_ds=[]
 test_ds=[]
 dev_ds=[]
+
 def load_data():
     global train_ds,test_ds,dev_ds
     file = open('train_data_clinc.pkl', 'rb')
@@ -26,13 +27,14 @@ def load_data():
     print("Loaded Dev Data")
     dev_ds=SentenceDataset(dev)
     print(dev_ds[0])
+    print("Data loading completed")
+
 def train_module(model,fine_tune,ff_dim,nhead):
     global train_ds,test_ds,dev_ds
     load_data()
     corpus = Corpus(train=train_ds,test=test_ds,dev=dev_ds)
     start_time= time.time()
     if model=="BERT":
-        print(f"in train module : {nhead,ff_dim}")
         tars = TARSClassifier(fine_tune=fine_tune,ff_dim=ff_dim,nhead=nhead)
     else:
         tars = TARSClassifier.load("tars-base")
@@ -44,7 +46,7 @@ def train_module(model,fine_tune,ff_dim,nhead):
 
     start_time= time.time()
 
-    data= trainer.train(base_path='taggers/clinc_small_tars_big_head_only', # path to store the model artifacts
+    data= trainer.train(base_path=f'taggers/clinc_small_tars_big_head_only_{ff_dim}_{nhead}', # path to store the model artifacts
                 learning_rate=0.02,
                 mini_batch_size=16,
                 max_epochs=50,

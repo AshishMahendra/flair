@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union,Optional
 
 import torch
 import torch.nn as nn
@@ -26,8 +26,8 @@ class TextClassifier(flair.nn.DefaultClassifier[Sentence]):
         self,
         document_embeddings: flair.embeddings.DocumentEmbeddings,
         label_type: str,
-        ff_dim,
-        nhead,
+        ff_dim: Optional[int] =2048,
+        nhead:Optional[int] =8,
         **classifierargs,
     ):
         """
