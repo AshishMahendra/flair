@@ -637,6 +637,9 @@ class TARSClassifier(FewshotClassifier):
         embeddings: Union[TransformerDocumentEmbeddings, str] = "bert-base-uncased",
         num_negative_labels_to_sample: int = 2,
         prefix: bool = True,
+        fine_tune:Optional[bool] =False,
+        ff_dim: Optional[int] =2048,
+        nhead:Optional[int] =8,
         **tagger_args,
     ):
         """
@@ -659,7 +662,7 @@ class TARSClassifier(FewshotClassifier):
         if isinstance(embeddings, str):
             embeddings = TransformerDocumentEmbeddings(
                 model=embeddings,
-                fine_tune=True, #alter this parameter to train the model or just head
+                fine_tune=fine_tune, #alter this parameter to train the model or just head
                 layers="-1",
                 layer_mean=False,
             )
@@ -674,6 +677,8 @@ class TARSClassifier(FewshotClassifier):
             document_embeddings=embeddings,
             label_dictionary=tars_dictionary,
             label_type=self.static_label_type,
+            ff_dim=ff_dim,
+            nhead=nhead,
             **tagger_args,
         )
 
