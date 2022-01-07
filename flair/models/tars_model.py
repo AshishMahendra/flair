@@ -738,7 +738,7 @@ class TARSClassifier(FewshotClassifier):
         return model_state
 
     @staticmethod
-    def _init_model_with_state_dict(state):
+    def _init_model_with_state_dict(state,ff_dim,nhead,fine_tune):
 
         # init new TARS classifier
         label_dictionary = state["label_dictionary"]
@@ -750,6 +750,9 @@ class TARSClassifier(FewshotClassifier):
             label_type=label_type,
             embeddings=state["tars_model"].document_embeddings,
             num_negative_labels_to_sample=state["num_negative_labels_to_sample"],
+            ff_dim=ff_dim,
+            nhead=nhead,
+            fine_tune=fine_tune,
         )
 
         # set all task information
