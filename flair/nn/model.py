@@ -125,7 +125,7 @@ class Model(torch.nn.Module, typing.Generic[DT]):
                 self.model_card["training_parameters"]["scheduler"] = scheduler
 
     @classmethod
-    def load(cls, model_path: Union[str, Path]):
+    def load(cls, model_path: Union[str, Path], ff_dim=2048, nhead=8, fine_tune=False,num_layers=1):
         """
         Loads the model from the given file.
         :param model_path: the model file
@@ -141,7 +141,7 @@ class Model(torch.nn.Module, typing.Generic[DT]):
             f = file_utils.load_big_file(str(model_file))
             state = torch.load(f, map_location="cpu")
 
-        model = cls._init_model_with_state_dict(state)
+        model = cls._init_model_with_state_dict(state,num_layers=num_layers, ff_dim=ff_dim, nhead=nhead,fine_tune=fine_tune)
 
         if "model_card" in state:
             model.model_card = state["model_card"]

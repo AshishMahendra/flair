@@ -783,16 +783,16 @@ class ModelTrainer:
                 cast(torchcontrib.optim.SWA, optimizer).swap_swa_sgd()
 
             # if we do not use dev data for model selection, save final model
-            if save_final_model and not param_selection_mode:
-                self.model.save(base_path / "final-model.pt", checkpoint=save_optimizer_state)
+            # if save_final_model and not param_selection_mode:
+                # self.model.save(base_path / "final-model.pt", checkpoint=save_optimizer_state)
 
         except KeyboardInterrupt:
             log_line(log)
             log.info("Exiting from training early.")
 
             if not param_selection_mode:
-                log.info("Saving model ...")
-                self.model.save(base_path / "final-model.pt", checkpoint=save_optimizer_state)
+                # log.info("Saving model ...")
+                # self.model.save(base_path / "final-model.pt", checkpoint=save_optimizer_state)
                 log.info("Done.")
         except Exception:
             if create_file_logs:
@@ -821,6 +821,7 @@ class ModelTrainer:
             log.removeHandler(log_handler)
 
         return {
+            "model":self.model,
             "test_score": final_score,
             "dev_score_history": dev_score_history,
             "train_loss_history": train_loss_history,

@@ -640,6 +640,7 @@ class TARSClassifier(FewshotClassifier):
         fine_tune:Optional[bool] =False,
         ff_dim: Optional[int] =2048,
         nhead:Optional[int] =8,
+        num_layers:Optional[int] =8,
         **tagger_args,
     ):
         """
@@ -679,6 +680,7 @@ class TARSClassifier(FewshotClassifier):
             label_type=self.static_label_type,
             ff_dim=ff_dim,
             nhead=nhead,
+            num_layers=num_layers,
             **tagger_args,
         )
 
@@ -738,7 +740,7 @@ class TARSClassifier(FewshotClassifier):
         return model_state
 
     @staticmethod
-    def _init_model_with_state_dict(state,ff_dim,nhead,fine_tune):
+    def _init_model_with_state_dict(state,ff_dim=2048,nhead=8,fine_tune=False,num_layers=1):
 
         # init new TARS classifier
         label_dictionary = state["label_dictionary"]
@@ -753,6 +755,7 @@ class TARSClassifier(FewshotClassifier):
             ff_dim=ff_dim,
             nhead=nhead,
             fine_tune=fine_tune,
+            num_layers=num_layers,
         )
 
         # set all task information
